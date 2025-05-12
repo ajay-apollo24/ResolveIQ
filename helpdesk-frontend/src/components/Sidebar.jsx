@@ -1,31 +1,49 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListIcon from '@mui/icons-material/List';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Link } from 'react-router-dom';
 
+const drawerWidth = 240;
+
 const Sidebar = () => {
   return (
-    <Drawer variant="permanent">
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }}
+    >
       <List>
-        <ListItem button component={Link} to="/">
+        <ListItemButton component={Link} to="/">
           <ListItemIcon><DashboardIcon /></ListItemIcon>
           <ListItemText primary="Dashboard" />
-        </ListItem>
-        <ListItem button component={Link} to="/tickets">
+        </ListItemButton>
+        <ListItemButton component={Link} to="/tickets">
           <ListItemIcon><ListIcon /></ListItemIcon>
           <ListItemText primary="Tickets" />
-        </ListItem>
-        <ListItem button component={Link} to="/analytics">
+        </ListItemButton>
+        <ListItemButton component={Link} to="/analytics">
           <ListItemIcon><AnalyticsIcon /></ListItemIcon>
           <ListItemText primary="Analytics" />
-        </ListItem>
-        <ListItem button component={Link} to="/settings">
+        </ListItemButton>
+        <ListItemButton component={Link} to="/settings">
           <ListItemIcon><SettingsIcon /></ListItemIcon>
           <ListItemText primary="Settings" />
-        </ListItem>
+        </ListItemButton>
       </List>
     </Drawer>
   );

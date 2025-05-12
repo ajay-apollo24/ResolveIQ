@@ -22,18 +22,18 @@ router.post('/signup', async (req, res) => {
 
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
     const isMatch = await user.comparePassword(password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) return res.status(403).json({ message: 'Incorrect password' });
 
     const token = generateToken(user);
-    res.status(200).json({ user, token });
+    res.status(200).json({ token, user: { id: user._id, email: user.email, name: user.name, role: user.role } });
   } catch (err) {
-    res.status(500).json({ message: 'Login failed', error: err });
+    res.status(500).json({ message: 'Internal server error during login', error: err.message });
   }
 });
 
