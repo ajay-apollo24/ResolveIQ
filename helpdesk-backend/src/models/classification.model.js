@@ -1,4 +1,6 @@
 // models/classification.model.js
+const mongoose = require('mongoose');
+
 const ClassificationSchema = new mongoose.Schema({
     type: String,
     name: String,

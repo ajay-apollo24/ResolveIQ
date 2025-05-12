@@ -1,4 +1,6 @@
 // models/sla.model.js
+const mongoose = require('mongoose');
+
 const SlaSchema = new mongoose.Schema({
     name: String,
     appliesTo: String,

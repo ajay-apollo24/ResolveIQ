@@ -1,4 +1,6 @@
 // models/stage.model.js
+const mongoose = require('mongoose');
+
 const StageSchema = new mongoose.Schema({
     name: String,
     order: Number,

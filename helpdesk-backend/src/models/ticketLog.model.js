@@ -1,4 +1,6 @@
 // models/ticketLog.model.js
+const mongoose = require('mongoose');
+
 const TicketLogSchema = new mongoose.Schema({
     ticketId: { type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' },
     action: String,

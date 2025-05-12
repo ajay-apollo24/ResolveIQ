@@ -1,4 +1,6 @@
 // models/ticketType.model.js
+const mongoose = require('mongoose');
+
 const TicketTypeSchema = new mongoose.Schema({
     name: String,
     description: String,
