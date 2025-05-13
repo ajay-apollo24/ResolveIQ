@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Agent = require('../models/agent.model');
 const Classification = require('../models/classification.model');
 const Group = require('../models/group.model');
 const Ticket = require('../models/ticket.model');
 const SLA = require('../models/sla.model');
 const Stage = require('../models/stage.model');
+const User = require('../models/user.model');
 
 mongoose.connect('mongodb://localhost:27017/helpdesk');
 
@@ -20,6 +22,15 @@ mongoose.connect('mongodb://localhost:27017/helpdesk');
     isActive: true,
     groupId: group._id
   });
+
+  await User.deleteMany();
+  const user = new User({
+    name: 'Ajay Bansal',
+    email: 'ajay@example.com',
+    password: 'test123', // plain
+    role: 'admin'
+  });
+  await user.save();
 
   await Classification.deleteMany();
   const classification = await Classification.create({
@@ -72,6 +83,6 @@ mongoose.connect('mongodb://localhost:27017/helpdesk');
     { name: 'Closed', order: 4, type: 'order' }
   ]);
 
-  console.log('✅ Seed data loaded successfully.');
+  console.log('✅ Seed data loaded successfully. Default login: ajay@example.com / test123');
   process.exit();
 })();
