@@ -15,15 +15,6 @@ mongoose.connect('mongodb://localhost:27017/helpdesk');
   const group = await Group.create({ name: 'Order Support', description: 'Handles order-related tickets' });
 
   await Agent.deleteMany();
-  const agent = await Agent.create({
-    name: 'Ajay Bansal',
-    email: 'ajay@example.com',
-    role: 'admin',
-    isActive: true,
-    groupId: group._id
-  });
-
-  await User.deleteMany();
   const user = new User({
     name: 'Ajay Bansal',
     email: 'ajay@example.com',
@@ -32,12 +23,22 @@ mongoose.connect('mongodb://localhost:27017/helpdesk');
   });
   await user.save();
 
+  const agent = await Agent.create({
+    name: 'Ajay Bansal',
+    email: 'ajay@example.com',
+    role: 'admin',
+    isActive: true,
+    groupId: group._id,
+    userId: user._id // Link agent to user
+  });
+
   await Classification.deleteMany();
   const classification = await Classification.create({
     type: 'order',
     name: 'Delivery Delay',
     defaultPriority: 'High',
-    autoAssignGroup: group.name
+    autoAssignGroup: group.name,
+    description: 'Issues related to delayed delivery of orders.' // <-- Add this line
   });
 
   await Ticket.deleteMany();

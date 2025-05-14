@@ -27,6 +27,9 @@ export const deleteTicket = (id, token) =>
 export const fetchAgents = (token) =>
   axios.get(`${API_BASE}/agents`, authHeader(token));
 
+export const fetchAgentByUserId = (userId, token) =>
+  axios.get(`${API_BASE}/agents/by-user/${userId}`, authHeader(token));
+
 // --- Groups ---
 export const fetchGroups = (token) =>
   axios.get(`${API_BASE}/groups`, authHeader(token));

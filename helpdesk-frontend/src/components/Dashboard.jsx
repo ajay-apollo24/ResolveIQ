@@ -1,17 +1,37 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import { fetchTickets } from '../api';
+import { fetchTickets, fetchAgentByUserId } from '../api';
 
 const Dashboard = () => {
-  const { user, token } = useContext(AuthContext);
+  const { user, token, agentId } = useContext(AuthContext);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadTickets = async () => {
+      
       try {
         const res = await fetchTickets(token);
-        const assigned = res.data.filter(ticket => ticket.agentId === user.id);
+        console.log('Logged in user ID:', user.id);
+        console.log('User ID type:', typeof user.id);
+        console.log('All tickets:', res.data.map(t => ({ 
+          id: t._id, 
+          agentId: t.agentId,
+          agentIdType: typeof t.agentId,
+          agentIdString: t.agentId ? t.agentId.toString() : 'null'
+        })));
+        
+        const assigned = res.data.filter(ticket => {
+          console.log('Checking ticket:', {
+            ticketId: ticket._id,
+            ticketAgentId: ticket.agentId,
+            userAgentId: user.id,
+            isMatch: ticket.agentId && ticket.agentId.toString() === user.id
+          });
+          return ticket.agentId && ticket.agentId.toString() === agentId;
+        });
+        
+        console.log('Filtered assigned tickets:', assigned);
         setTickets(assigned);
       } catch (err) {
         console.error('Error loading tickets', err);
@@ -21,7 +41,7 @@ const Dashboard = () => {
     };
 
     loadTickets();
-  }, [token, user.id]);
+  }, [token, user.id, agentId]);
 
   return (
     <div style={{ padding: '1rem' }}>
